@@ -1,0 +1,24 @@
+<div style="width:100%">
+	<div style="float: left; width: 50%;">
+		{%for left in lefts%}
+		<div style="margin: 10px;">
+			<b>{{left["title"]}}：</b> {{left["value"]}}
+		</div>
+		{%endfor%}
+	</div>
+	<div style="float: left; width: 50%;">
+		{%for right in rights%}
+		<div style="margin: 10px;">
+			<b>{{right["title"]}}：</b> {{right["value"]}}
+		</div>
+		{%endfor%}
+	</div>
+	<div style="margin: 10px;float: left">
+		<div >
+			<b>查询MMSI：</b>
+		</div>
+		<div>
+			{{mmsi}}
+		</div>
+	</div>
+</div>

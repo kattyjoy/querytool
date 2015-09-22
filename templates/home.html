@@ -1,0 +1,523 @@
+{% extends "layout.html" %}
+{% block headscript %}
+	<!--    <link rel="stylesheet" href="{{ url_for('static', filename='jqwidgets/styles/jqx.base.css') }}" />
+	    <link rel="stylesheet" href="{{ url_for('static', filename='jqwidgets/styles/jqx.bootstrap.css') }}" />-->
+    <script type="text/javascript" src="{{ url_for('static', filename='jqwidgets/jqxcore.js') }}"></script>
+  <!--  <script type="text/javascript" src="{{ url_for('static', filename='jqwidgets/jqxdatetimeinput.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='jqwidgets/jqxcalendar.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='jqwidgets/jqxtooltip.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='jqwidgets/globalization/globalize.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='jqwidgets/globalization/globalize.culture.zh-CHS.js') }}"></script>-->
+	
+ <script type="text/javascript" src="{{ url_for('static', filename='jqwidgets/jqxbuttons.js') }}"></script>
+ <script type="text/javascript" src="{{ url_for('static', filename='jqwidgets/jqxscrollbar.js') }}"></script>
+ <script type="text/javascript" src="{{ url_for('static', filename='jqwidgets/jqxlistbox.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='jqwidgets/jqxdata.js') }}"></script>
+
+
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}" />
+ 	<script type="text/javascript" src="{{ url_for('static', filename='js/zebra_datepicker.js') }}"></script>
+
+ 	<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-select.min.css') }}" />
+ 	<script src="{{ url_for('static', filename='js/bootstrap-select.min.js') }}"></script>
+
+
+ 	<link rel="stylesheet" href="{{ url_for('static', filename='css/fileinput.css') }}" />
+ 	<script src="{{ url_for('static', filename='js/fileinput.js') }}"></script>
+ 	<script src="{{ url_for('static', filename='js/fileinput_locale_zh.js') }}"></script>
+
+ 	<style>
+ 	 input.seltime[readonly]{background: inherit;}
+ 	 ul#zonesel li{width:33%;font-weight:bolder;}
+ 	 div#positiontabcontent{padding-top: 2%}
+ 	 fieldset.targetset{margin-top:10px;margin-bottom: 30px}
+	#searchnav{
+		border-radius: 4px;
+		background: #EAEEF7;
+
+	}
+	#multidatepos{	
+		bottom:0px;
+		position: fixed;
+		right:60px;
+		width:90%;
+		z-index: 2147483647;
+	}
+
+	#buttongroup{width:100%;}
+	#buttongroup button{
+		border-bottom-left-radius:0px;
+		border-bottom-right-radius:0px;
+	}
+	.collpanel{
+		position:absolute;
+		margin-bottom: 0px;
+	}
+	.has-error .errorinfo{
+		visibility: visible;
+	}
+  		</style>
+
+  <!--  <script src="{{ url_for('static', filename='js/valid.js') }}"></script>-->
+ 
+	<script>
+
+
+		function successProcess(responseText, statusText, xhr, $form)
+		{
+
+				//var datajson = eval("("+responseText+")");
+				$("#queryresult").text("成功");
+				$(".modal-footer").removeClass("onebutton");
+				$("#queryinfo").empty();
+				$("#queryinfo").append('<span class="errorinfo" >已执行查询，预计'+responseText.waittime+'后完成</span>');
+				$("#fadebutton").text("查看任务列表");
+				$("#cancelbutton").addClass("success");
+				$("#fadebutton").addClass("success");
+				$("#resultdialog").modal();
+				$(":radio")[0].click();
+				return true;
+			
+		}
+		function errorProcess(Request ,error,event)
+		{				
+			alert(error);
+			alert(event);
+			$("#queryresult").text("失败");
+			$(".modal-footer").removeClass("onebutton");
+			$("#queryinfo").empty();
+			$("#queryinfo").append('<span class	="errorinfo" >请重试查询或返回修改表单</span>');
+			$("#fadebutton").text("重试查询");
+			$("#cancelbutton").addClass("fail");
+			$("#fadebutton").addClass("fail");
+			$("#fadebutton").attr("data-dismiss","modal");
+			$("#resultdialog").modal();
+			return true;
+		}
+		options = {
+					success:successProcess,
+					error: errorProcess,
+					timeout: 3000,
+					dataType: 'json',
+					resetForm:true
+		};
+
+
+
+		//////ready function
+		$(document).ready(function(){
+
+
+			var timetable =  $("<table  style='width:100%;' id='timelisttable'  class='table table-hover'></table>");
+			$("#timepanelbody").append(timetable);
+
+
+			var regiontable = $("<table  style='width:100%;' id='regionlisttable'  class='table table-hover'></table>")
+			$("#regionpanelbody").append(regiontable);
+
+
+			var panelbodyheight = $(window).height()*0.5;
+			//$(".collpanel").height(collpanelheight);
+			$("#timepanelbody,#regionpanelbody").height(panelbodyheight);
+			var panelheight = $(".collpanel").height();
+			$(".collpanel").css("top",-1*panelheight);
+			$("#regionpanel").css("left",$("#timepanel").width());
+  			$(".collpanel").hide();
+
+			document.onclick = function(e){
+				e = window.event || e;
+				obj = $(e.srcElement || e.target);
+				if(obj.hasClass("timeindexbutton")|| obj.hasClass("regionindexbutton"))
+					return;
+				if(!obj.closest("#multidatepos").length)
+				{
+					$(".collpanel").fadeOut();
+					$("#datebutton,#regionbutton").removeClass("active");
+				}
+			};
+
+
+
+
+
+			var date = new Date();
+
+			var today =String(date.getFullYear()+"/"+(date.getMonth()+1)+"/"+date.getDate())
+			
+			$('input#start').Zebra_DatePicker({
+				pair:$('input#end'),
+				format: 'Y/m/d',
+				default_position:"below",
+				show_icon:true
+
+			}).val(today);
+			$('input#end').Zebra_DatePicker({
+				direction:[true,false],
+				format: 'Y/m/d',
+				default_position:"below",
+				show_icon:true
+			}).val(today);
+
+	$(".wrapdiv").each(function(){
+		var spanstr="<span class='control-label errorinfo' hidden>a</span>";
+		$(this).append(spanstr);
+	});
+				
+    //data-show-preview="false" data-show-upload="false" data-show-caption="true" data-language="zh" data-browse-label="载入MMSI文件" data-browse-class="btn btn-info" data-max-file-count="1"
+    $("#loadmmsi").fileinput({
+        showPreview:true,
+        previewFileType:"any",
+    	showUpload:false,
+    	showCaption:true,
+    	language:"zh",
+    	browseClass: "btn btn-info",
+    	browseLabel: "载入MMSI文件",
+    	maxFileCount:1,
+    	autoReplace:true,
+    	layoutTemplates: {
+            main1: "{preview}\n" +
+            "<div class=\'input-group {class}\'>\n" +
+            "   <div class=\'input-group-btn\'>\n" +
+            "       {browse}\n" +
+            "   </div>\n" +
+            "   {caption}\n" +
+            "   <div class=\'input-group-btn\'>\n" +
+            "       {remove}\n" +
+            "   </div>\n" +
+            "</div>"
+        }
+    });
+
+    $("#loadmmsi").fileinput('disable');
+		$("#navsearch").addClass("active");
+		 $('.selectpicker').selectpicker();
+		});
+	</script>
+	<script src="static/js/valid.js"></script>
+	<style type="text/css">
+	.modal-footer button
+	{
+		display:inline-block;
+	}
+
+	.onebutton #fadebutton
+	{
+		display:none;
+	}
+
+</style>
+	
+{%endblock%}
+
+{% block body %}
+
+
+{%macro createLngLat(group,direct,lnglat,tp,labeltitle,hidden="")-%}
+<div class="form-group"  >
+  <label class="col-sm-2 control-label " >{{labeltitle}}</label>
+  <div class="col-sm-8">
+    <div style="width:30%;margin-right:1%" class="wrapdiv pull-left">
+	  <input id="{{direct}}{{tp}}{{lnglat}}cmp" name="{{direct}}{{tp}}{{lnglat}}cmp" class="form-control realdeg"  type="text"  >
+	  <script>
+		{% if lnglat=="lat" %}
+		    $("#{{direct}}{{tp}}{{lnglat}}cmp").data("max","90");
+		{%endif%}
+		{% if lnglat=="lng" %}
+		    $("#{{direct}}{{tp}}{{lnglat}}cmp").data("max","180");
+		{%endif%}
+	  </script>
+	</div>
+	
+	<div style="width:24%;margin-right:1%;" class="pull-left">
+	  <a id="{{direct}}{{tp}}{{lnglat}}tog" name="{{direct}}{{tp}}{{lnglat}}tog" class="btn btn-info  dectoggle" data-toggle="button"  role="button">切换为度分秒输入<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>			
+	</div>
+
+
+	<div style="width:13%" class="wrapdiv pull-left">
+	  <div class="input-group" >
+	    <input class="form-control intdeg" id="{{direct}}{{tp}}{{lnglat}}deg" name="{{direct}}{{tp}}{{lnglat}}deg" type="text" disabled>
+	    <script>
+		{% if lnglat=="lat" %}
+		  $("#{{direct}}{{tp}}{{lnglat}}deg").data("max","90");
+		{%endif%}
+		{% if lnglat=="lng" %}
+		  $("#{{direct}}{{tp}}{{lnglat}}deg").data("max","180");
+		{%endif%}
+	    </script>
+		<div class="input-group-addon " >°</div> 
+	  </div>
+	</div>
+
+	<div style="width:13%" class="wrapdiv pull-left">
+	  <div class="input-group" >
+	    <input id="{{direct}}{{tp}}{{lnglat}}min" name="{{direct}}{{tp}}{{lnglat}}min" class="form-control intdeg " type="text" disabled>
+	    <script>
+		  $("#{{direct}}{{tp}}{{lnglat}}min").data("max","59");
+		</script>
+		<div class="input-group-addon" > '</div>
+ 	  </div>
+	</div>
+	
+
+	<div style="width:13%" class="wrapdiv pull-left">
+	  <div class="input-group" >
+		<input id="{{direct}}{{tp}}{{lnglat}}sec" name="{{direct}}{{tp}}{{lnglat}}sec" class="form-control intdeg " type="text" disabled>
+		<script>
+		  $("#{{direct}}{{tp}}{{lnglat}}sec").data("max","59");
+		</script>
+		<div class="input-group-addon" >"</div>
+	  </div>
+	</div>
+	
+	<div style="width:5%" class="pull-left">
+	{% if lnglat=="lat" %}
+	  <input id="{{direct}}{{tp}}{{lnglat}}nst" name="{{direct}}{{tp}}{{lnglat}}nst" class="btn btn-default directiontoggle degtoggle" value="N" type="button" style="width:100%;padding-left:0px;padding-right:0px" disabled>
+	  <script>
+		  $("#{{direct}}{{tp}}{{lnglat}}nst").data("positive","N");
+		  $("#{{direct}}{{tp}}{{lnglat}}nst").data("negative","S");
+	  </script>
+	{%endif%}
+	{% if lnglat=="lng" %}
+	  <input id="{{direct}}{{tp}}{{lnglat}}ewt" name="{{direct}}{{tp}}{{lnglat}}ewt" class="btn btn-default directiontoggle degtoggle" value="E" type="button" style="width:100%;padding-left:0px;padding-right:0px" disabled>
+	  <script>
+		  $("#{{direct}}{{tp}}{{lnglat}}nst").data("positive","E");
+		  $("#{{direct}}{{tp}}{{lnglat}}nst").data("negative","W");
+	  </script>
+	{%endif%}
+	</div>
+  </div>
+</div>
+	
+
+
+{%- endmacro %}
+
+
+      <div class="container" style="padding-bottom:20px">
+
+  <form name="queryform" id ="queryform" class="form-horizontal container" method=post action="{{ url_for('validquery') }}" role="form"  enctype=multipart/form-data  >
+	<div class="col-sm-10 col-sm-offset-1">
+			<div class="row">
+	<fieldset id="timeset" class="targetset">
+		<legend id="timelegend" class="target" >
+			日期选项
+		</legend>
+		<div >
+			<div class="form-group">
+				<label  class="col-sm-2 control-label">起止时间</label>
+				<div class="col-sm-8">
+					<div style="width:45%"  class=" pull-left wrapdiv">
+						<input id="start" type="text" class="form-control seltime" style="cursor:pointer" >
+					</div>
+					<div class="form-control-static pull-left " style="width:10%;text-align:center" >至
+					</div>
+					<div style="width:45%" class=" pull-left wrapdiv">
+						<input id="end" type="text"  class="form-control seltime" style="cursor:pointer">
+					</div>
+				</div>
+			</div>
+			<div class=" form-group ">
+			<label  class="col-sm-8 sr-only control-label"></label>
+			<div class="col-sm-2">
+				<a role="button" tabindex="0" class="btn btn-primary" id="addtimebutton" style="width:100%"><span class="glyphicon  glyphicon-plus-sign" aria-hidden="true"></span> 添加时间</a>
+			</div>
+			</div>
+		</div>
+	</fieldset>
+	<fieldset  id="positionset" class="targetset">
+		<legend id="positionlegend" class="target">
+			位置选项
+		</legend>
+		<fieldset>
+		<ul class="nav nav-tabs" id="positiontablist" role="tablist">
+		  <li role="presentation" class="active" id="geo"><a data-toggle="tab" href="#positiontab" role="tab" >按地理区域</a></li>
+		  <li role="presentation" id="port"><a data-toggle="tab" href="#porttab" role="tab">按港口名称</a></li>
+		</ul>
+		<div class="tab-content" id="positiontabcontent">
+			<div class="tab-pane active"  id="positiontab" role="tabpanel">
+				<div class="form-group">
+
+					<label  class="col-sm-2 control-label" >区域形状</label>
+					<div class="col-sm-8" >
+						<ul class="nav nav-pills" id="zonesel" role="tablist" style="width:100%">
+							<li role="presentation" class="active" style="width:33%" id="tp0"><a data-toggle="tab" href="#recgroup1field" role="tab" class="text-center">矩形(一点)</a></li>
+							<li role="presentation" style="width:33%" id="tp1"><a data-toggle="tab" href="#recgroup2field" role="tab" class="text-center">矩形(两点)</a></li>
+							<li role="presentation" style="width:33%" id="tp2"><a data-toggle="tab" href="#circlegroupfield" role="tab" class="text-center">圆形</a></li>
+						</ul>
+						 
+					</div>
+
+				</div>
+					<hr style="width:90%;margin-top:0px;margin-bottom:2%;border:solid thin #D2D2DA;">
+				<div class="tab-content">
+				<div  id="recgroup1field" class="active tab-pane fade in">
+				{{createLngLat(direct="l",lnglat="lat",tp="0",labeltitle="左上纬度")}}
+				{{createLngLat(direct="l",lnglat="lng",tp="0",labeltitle="左上经度")}}
+
+			
+				<div class="form-group recgroup1">
+					<label for="vertical" class="col-sm-2 control-label">矩形长宽</label>
+					<div class="col-sm-4 wrapdiv">
+
+						<div class="input-group">
+							<span class="input-group-addon" >长度</span>
+							<input id="vertical" name="vertical" class="form-control length"  >
+							<span class="input-group-addon">km</span>
+						</div>
+					</div>
+					<div class="col-sm-4 wrapdiv">
+						<div class="input-group">
+							<span class="input-group-addon">宽度</span>
+							<input id="horizontal" name="horizontal" class="form-control length">
+							<span class="input-group-addon">km</span>
+						</div>
+					</div>
+				</div>
+				</div>
+				<div class=" tab-pane fade " id="recgroup2field" >
+					{{createLngLat(direct="l",lnglat="lat",tp="1",labeltitle="左上纬度")}}
+					{{createLngLat(direct="l",lnglat="lng",tp="1",labeltitle="左上经度")}}
+					{{createLngLat(direct="r",lnglat="lat",tp="1",labeltitle="右下纬度")}}
+					{{createLngLat(direct="r",lnglat="lng",tp="1",labeltitle="右下经度")}}
+				</div>
+				<div class=" tab-pane fade "  id="circlegroupfield">
+					{{createLngLat(direct="c",lnglat="lat",tp="2",labeltitle="圆心纬度")}}
+					{{createLngLat(direct="c",lnglat="lng",tp="2",labeltitle="圆心经度")}}
+					<div class="form-group circlegroup">
+						<label for="radiuscircle" class="col-sm-2 control-label">区域半径</label>
+						<div class="col-sm-8 wrapdiv">
+							<div class="input-group">
+								<input id="radiuscircle" name="radiuscircle" class="form-control length">
+								<span class="input-group-addon">km</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			</div>
+			<div class="tab-pane" id="porttab"  role="tabpanel">
+				<div class="form-group">
+					<label class="col-sm-2 control-label">港口名称</label>
+					<div class="col-sm-8 wrapdiv">
+						<input type="text" name="portname" id="portname" class="form-control">
+					</div>
+				</div>
+			</div>
+		</div>
+	</fieldset>
+		<div class=" form-group ">
+			<label  class="col-sm-8 sr-only control-label"></label>
+			<div class="col-sm-2">
+				<a role="button" tabindex="1"  class="btn btn-primary" id="addregionbutton" style="width:100%" ><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 添加位置</a>
+			</div>
+		</div>
+	</fieldset>
+	<fieldset id="shipset" class="targetset">
+		<legend id="shiplegend" class="target" >
+			船舶选项
+		</legend>
+		<div class="form-group" >
+			<label class="col-sm-2 control-label">船舶MMSI<br>(以逗号分隔)</label>
+			<div class="col-sm-8 wrapdiv">
+			<div class="input-group">
+			<span class="input-group-btn ">
+						<a class="btn btn-info nommsi form-control"  data-toggle="button"  id="mmsitoggle"  role="button">不指定MMSI</a>
+			</span>
+			<input class="form-control mmsi" name="shipmmsi" id="shipmmsi" type="text" disabled>  
+			
+			</div>
+			</div>
+		</div>	
+		<div class="form-group" >
+			<label class="col-sm-2 control-label sr-only"></label>
+			<div class="col-sm-8 wrapdiv" id="loadmmsiwrap">
+			<input id="loadmmsi"  name="mmsilist" type="file" multiple data-min-file-count="1"  >
+			</div>
+		</div>	
+		<div class="form-group" >
+			<label  class="col-sm-2 control-label">船舶国籍</label>
+			<div class="col-sm-8 wrapdiv">
+				<div class="input-group">
+			<span class="input-group-btn ">
+						<a class="btn btn-info  form-control"  data-toggle="button"  id="countrytoggle"  role="button">不指定国籍</a>
+			</span>
+            {% include 'country.html' %}
+			 
+			</div>
+			</div>
+			
+			</div>
+	
+	</fieldset>
+	<fieldset id="databaseset"  class="targetset ">
+		<legend id="databaselegend" class="target">
+			数据库选项
+		</legend>
+		<div class="form-group">
+			<label  class="col-sm-2 control-label">数据来源</label>
+			<div class="col-sm-8">
+				
+			  <select class="form-control selectpicker  show-tick" id="datasource" name="datasource">
+				<option value="hive" selected>Hive</option>
+				<option value="oracle">Oracle</option>
+				<option value="mysql">MySQL</option>
+			  </select>
+			</div> 
+		</div>
+			<div class="form-group">
+				<label for="filetype" class="col-sm-2 control-label">打包方式</label>
+				<div class="col-sm-8">
+				  <select class="form-control selectpicker  show-tick" name="filetype" id="filetype">
+					<option value="csv" selected>CSV</option>
+					<option value="text">Text</option>
+				  </select>
+				</div>  
+			</div> 
+	</fieldset>
+</div>
+</div>
+  </form>
+
+
+<div id="multidatepos" >
+	<div class="panel panel-default collpanel" id="timepanel" style="width:30%">
+		<div class="panel-heading">
+			<h3 class="panel-title">已选时间</h3>
+		</div>
+		<div  id="timepanelbody" style="overflow:auto;">		  	
+		</div>
+	</div>
+	<div class="panel panel-default collpanel" id="regionpanel" style="width:60%" >
+	  	<div class="panel-heading">
+	    	<h3 class="panel-title">已选区域</h3>
+		</div>
+		<div id="regionpanelbody" style="overflow:auto;">
+		</div>
+	</div>
+	<div id="buttongroup" class="btn-group">
+		<button type="button" class="btn btn-default " data-toggle="button" id="datebutton" style="width:30%"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> 已选日期 <span class="badge" id="timeindexcount"></span></button>
+		<button type="button" class="btn btn-default" data-toggle="button" id="regionbutton" style="width:60%"><span class="glyphicon glyphicon-globe" aria-hidden="true" ></span> 已选区域 <span class="badge" id="regionindexcount"></span></button>
+		<button type="button" class="btn btn-primary " id="submitsearch" style="width:10%"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 提交查询</button>
+	</div>
+</div>
+
+
+</div>
+
+  <div id="messagedialog" class="modal fade " data-show='false' data-backdrop='static'>
+  <div class="modal-dialog" >
+    <div class="modal-content ">
+      <div class="modal-header" id="msgheader">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="msgtitle"></h4>
+      </div>
+      <div class="modal-body " id="msgbody">
+      	
+      </div>
+      <div class="modal-footer" id="msgbutton">
+        
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+  {%endblock%}

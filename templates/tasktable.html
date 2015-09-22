@@ -1,0 +1,38 @@
+
+<table class="table table-hover table-striped"  >
+	<tr>
+		<td></td>
+		<td></td>
+		<td>历史及当前任务总计：{{count}}个</td>
+	</tr>
+	<tr>
+		<th>任务ID</th>
+		<th>开始时间</th>
+		<th>当前状态</th>
+	</tr>
+	{% for item in items %}
+	<tr>
+		<td>{{item[1]}}</td>
+		<td>{{item[2]}}</td>
+		<td>{{item[3]}}</td>
+	</tr>
+	{%endfor%}
+</table>
+  <ul class="pagination"  style="padding-left:40%" id="tablepagenav">
+    <li>
+      <a href="#" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    {% %}
+    <li class="active"><a href="#">1</a></li>
+    <li><a href="#">2</a></li>
+    <li><a href="#">3</a></li>
+    <li><a href="#">4</a></li>
+    <li><a href="#">5</a></li>
+    <li>
+      <a href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>

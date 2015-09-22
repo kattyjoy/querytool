@@ -1,0 +1,263 @@
+<!--<head>
+
+	   <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.form.min.js') }}"></script>
+  
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+    <link href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" />
+
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-select.min.css') }}" />
+ 	<script src="{{ url_for('static', filename='js/bootstrap-select.min.js') }}"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+
+		 $('.selectpicker').selectpicker();
+		 $("#shipcountry").find("option").eq(0).attr("selected","selected");
+		});
+</script>
+</head>
+<form>
+<select name="shipcountry" id="shipcountry" class="form-control selectpicker" >
+{% for country in countries %}<option value="{{country}}" >{{country}}</option>
+{%endfor%}
+</select>
+
+</form>-->
+
+<select name="shipcountry[]" id="shipcountry" class="form-control selectpicker  show-tick"   data-live-search="true" multiple disabled>
+<option data-subtext="﻿阿得利海岸" value="﻿Adelie Land - France">﻿Adelie Land - France</option>
+<option data-subtext="阿富汗" value="Afghanistan">Afghanistan</option>
+<option data-subtext="阿拉斯加州" value="Alaska (State of) - United States of America">Alaska (State of) - United States of America</option>
+<option data-subtext="阿尔巴尼亚" value="Albania">Albania</option>
+<option data-subtext="阿尔及利亚" value="Algeria">Algeria</option>
+<option data-subtext="美国萨摩亚群岛" value="American Samoa - United States of America">American Samoa - United States of America</option>
+<option data-subtext="安道尔" value="Andorra">Andorra</option>
+<option data-subtext="安哥拉" value="Angola">Angola</option>
+<option data-subtext="安圭拉岛" value="Anguilla - United Kingdom of Great Britain and Northern Ireland">Anguilla - United Kingdom of Great Britain and Northern Ireland</option>
+<option data-subtext="安提瓜岛和巴布达岛" value="Antigua and Barbuda">Antigua and Barbuda</option>
+<option data-subtext="阿根廷" value="Argentina">Argentina</option>
+<option data-subtext="亚美尼亚" value="Armenia">Armenia</option>
+<option data-subtext="阿鲁巴岛" value="Aruba - Netherlands (Kingdom of the)">Aruba - Netherlands (Kingdom of the)</option>
+<option data-subtext="阿森松" value="Ascension Island - United Kingdom of Great Britain and Northern Ireland">Ascension Island - United Kingdom of Great Britain and Northern Ireland</option>
+<option data-subtext="澳大利亚" value="Australia">Australia</option>
+<option data-subtext="奥地利" value="Austria">Austria</option>
+<option data-subtext="阿塞拜疆" value="Azerbaijan">Azerbaijan</option>
+<option data-subtext="亚述尔群岛" value="Azores - Portugal">Azores - Portugal</option>
+<option data-subtext="巴哈马群岛" value="Bahamas (Commonwealth of the)">Bahamas (Commonwealth of the)</option>
+<option data-subtext="巴林岛" value="Bahrain (Kingdom of)">Bahrain (Kingdom of)</option>
+<option data-subtext="孟加拉" value="Bangladesh">Bangladesh</option>
+<option data-subtext="巴巴多斯" value="Barbados">Barbados</option>
+<option data-subtext="白俄罗斯" value="Belarus">Belarus</option>
+<option data-subtext="比利时" value="Belgium">Belgium</option>
+<option data-subtext="伯利兹" value="Belize">Belize</option>
+<option data-subtext="贝宁" value="Benin">Benin</option>
+<option data-subtext="百慕大群岛" value="Bermuda - United Kingdom of Great Britain and Northern Ireland">Bermuda - United Kingdom of Great Britain and Northern Ireland</option>
+<option data-subtext="不丹" value="Bhutan (Kingdom of)">Bhutan (Kingdom of)</option>
+<option data-subtext="玻利维亚" value="Bolivia">Bolivia</option>
+<option data-subtext="波黑" value="Bosnia & Herzegovina">Bosnia & Herzegovina</option>
+<option data-subtext="博茨瓦纳" value="Botswana">Botswana</option>
+<option data-subtext="巴西" value="Brazil">Brazil</option>
+<option data-subtext="英国维尔京群岛" value="British Virgin Islands - United Kingdom of Great Britain and Northern Ireland">British Virgin Islands - United Kingdom of Great Britain and Northern Ireland</option>
+<option data-subtext="文莱" value="Brunei">Brunei</option>
+<option data-subtext="保加利亚" value="Bulgaria">Bulgaria</option>
+<option data-subtext="布基纳法索" value="Burkina">Burkina</option>
+<option data-subtext="布隆迪" value="Burundi">Burundi</option>
+<option data-subtext="柬埔寨" value="Cambodia">Cambodia</option>
+<option data-subtext="喀麦隆" value="Cameroon">Cameroon</option>
+<option data-subtext="加拿大" value="Canada">Canada</option>
+<option data-subtext="佛得角" value="Cape Verde">Cape Verde</option>
+<option data-subtext="开曼群岛" value="Cayman Islands">Cayman Islands</option>
+<option data-subtext="中非" value="Central African Republic">Central African Republic</option>
+<option data-subtext="乍得" value="Chad">Chad</option>
+<option data-subtext="智利" value="Chile">Chile</option>
+<option data-subtext="中国" value="China">China</option>
+<option data-subtext="圣诞岛" value="Christmas Island">Christmas Island</option>
+<option data-subtext="可可斯群岛" value="Cocos (Keeling) Islands - Australia">Cocos (Keeling) Islands - Australia</option>
+<option data-subtext="哥伦比亚" value="Colombia">Colombia</option>
+<option data-subtext="刚果（布）" value="Congo (Republic of the)">Congo (Republic of the)</option>
+<option data-subtext="库克群岛" value="Cook Islands">Cook Islands</option>
+<option data-subtext="哥斯达黎加" value="Costa Rica">Costa Rica</option>
+<option data-subtext="科特迪瓦" value="Cote d'Ivoire">Cote d'Ivoire</option>
+<option data-subtext="克罗地亚" value="Croatia">Croatia</option>
+<option data-subtext="克罗泽群岛" value="Crozet Archipelago - France">Crozet Archipelago - France</option>
+<option data-subtext="古巴" value="Cuba">Cuba</option>
+<option data-subtext="塞浦路斯" value="Cyprus">Cyprus</option>
+<option data-subtext="捷克" value="Czech Republic">Czech Republic</option>
+<option data-subtext="刚果（金）" value="Democratic Republic of the Congo">Democratic Republic of the Congo</option>
+<option data-subtext="丹麦" value="Denmark">Denmark</option>
+<option data-subtext="吉布提" value="Djibouti">Djibouti</option>
+<option data-subtext="多米尼加" value="Dominican Republic">Dominican Republic</option>
+<option data-subtext="厄瓜多尔" value="Ecuador">Ecuador</option>
+<option data-subtext="埃及" value="Egypt">Egypt</option>
+<option data-subtext="萨尔瓦多" value="El Salvador">El Salvador</option>
+<option data-subtext="赤道几内亚" value="Equatorial Guinea">Equatorial Guinea</option>
+<option data-subtext="厄立特里亚" value="Eritrea">Eritrea</option>
+<option data-subtext="爱沙尼亚" value="Estonia">Estonia</option>
+<option data-subtext="埃塞俄比亚" value="Ethiopia">Ethiopia</option>
+<option data-subtext="福克兰群岛" value="Falkland Islands (Malvinas) - United Kingdom of Great Britain and Northern Ireland">Falkland Islands (Malvinas) - United Kingdom of Great Britain and Northern Ireland</option>
+<option data-subtext="法罗群岛" value="Faroe Islands">Faroe Islands</option>
+<option data-subtext="密克罗尼西亚联邦" value="Federated States of Micronesia">Federated States of Micronesia</option>
+<option data-subtext="斐济" value="Fiji (Republic of)">Fiji (Republic of)</option>
+<option data-subtext="芬兰" value="Finland">Finland</option>
+<option data-subtext="法国" value="France">France</option>
+<option data-subtext="法国玻利尼西亚" value="French Polynesia - France">French Polynesia - France</option>
+<option data-subtext="加蓬" value="Gabon">Gabon</option>
+<option data-subtext="冈比亚" value="Gambia">Gambia</option>
+<option data-subtext="格鲁吉亚" value="Georgia">Georgia</option>
+<option data-subtext="德国" value="Germany">Germany</option>
+<option data-subtext="加纳" value="Ghana">Ghana</option>
+<option data-subtext="直布罗陀" value="Gibraltar">Gibraltar</option>
+<option data-subtext="英国" value="Great Britain (United Kingdom; England)">Great Britain (United Kingdom; England)</option>
+<option data-subtext="希腊" value="Greece">Greece</option>
+<option data-subtext="格陵兰" value="Greenland">Greenland</option>
+<option data-subtext="格林纳达" value="Grenada">Grenada</option>
+<option data-subtext="瓜德罗普岛（法属）" value="Guadeloupe (French Department of) - France">Guadeloupe (French Department of) - France</option>
+<option data-subtext="危地马拉" value="Guatemala">Guatemala</option>
+<option data-subtext="圭亚那（法属）" value="Guiana (French Department of) - France">Guiana (French Department of) - France</option>
+<option data-subtext="几内亚" value="Guinea">Guinea</option>
+<option data-subtext="几内亚比绍" value="Guinea-Bissau">Guinea-Bissau</option>
+<option data-subtext="圭亚那" value="Guyana">Guyana</option>
+<option data-subtext="海地" value="Haiti">Haiti</option>
+<option data-subtext="洪都拉斯" value="Honduras">Honduras</option>
+<option data-subtext="香港" value="Hong Kong">Hong Kong</option>
+<option data-subtext="匈牙利" value="Hungary">Hungary</option>
+<option data-subtext="冰岛" value="Iceland">Iceland</option>
+<option data-subtext="印度" value="India">India</option>
+<option data-subtext="印尼" value="Indonesia">Indonesia</option>
+<option data-subtext="伊朗" value="Iran">Iran</option>
+<option data-subtext="伊拉克" value="Iraq">Iraq</option>
+<option data-subtext="爱尔兰" value="Ireland">Ireland</option>
+<option data-subtext="以色列" value="Israel">Israel</option>
+<option data-subtext="意大利" value="Italy">Italy</option>
+<option data-subtext="牙买加" value="Jamaica">Jamaica</option>
+<option data-subtext="日本" value="Japan">Japan</option>
+<option data-subtext="约旦" value="Jordan">Jordan</option>
+<option data-subtext="哈萨克斯坦" value="Kazakhstan">Kazakhstan</option>
+<option data-subtext="肯尼亚" value="Kenya">Kenya</option>
+<option data-subtext="凯尔盖朗群岛" value="Kerguelen Islands - France">Kerguelen Islands - France</option>
+<option data-subtext="基里巴斯" value="Kiribati">Kiribati</option>
+<option data-subtext="科威特" value="Kuwait">Kuwait</option>
+<option data-subtext="吉尔吉斯斯坦" value="Kyrgyzstan">Kyrgyzstan</option>
+<option data-subtext="老挝" value="Laos">Laos</option>
+<option data-subtext="拉脱维亚" value="Latvia">Latvia</option>
+<option data-subtext="黎巴嫩" value="Lebanon">Lebanon</option>
+<option data-subtext="莱索托" value="Lesotho">Lesotho</option>
+<option data-subtext="利比里亚" value="Liberia">Liberia</option>
+<option data-subtext="利比亚" value="Libya">Libya</option>
+<option data-subtext="列支敦士登" value="Liechtenstein">Liechtenstein</option>
+<option data-subtext="立陶宛" value="Lithuania">Lithuania</option>
+<option data-subtext="卢森堡" value="Luxembourg">Luxembourg</option>
+<option data-subtext="澳门" value="Macao">Macao</option>
+<option data-subtext="马达加斯加" value="Madagascar">Madagascar</option>
+<option data-subtext="马德拉" value="Madeira - Portugal">Madeira - Portugal</option>
+<option data-subtext="马拉维" value="Malawi">Malawi</option>
+<option data-subtext="马来西亚" value="Malaysia">Malaysia</option>
+<option data-subtext="马尔代夫" value="Maldives">Maldives</option>
+<option data-subtext="马里" value="Mali">Mali</option>
+<option data-subtext="马耳他" value="Malta">Malta</option>
+<option data-subtext="马绍尔群岛" value="Marshall islands">Marshall islands</option>
+<option data-subtext="马提尼克岛（法属）" value="Martinique (French Department of) - France">Martinique (French Department of) - France</option>
+<option data-subtext="毛利塔尼亚伊斯兰共和国" value="Mauritania (Islamic Republic of)">Mauritania (Islamic Republic of)</option>
+<option data-subtext="毛里求斯" value="Mauritius">Mauritius</option>
+<option data-subtext="墨西哥" value="Mexico">Mexico</option>
+<option data-subtext="摩尔多瓦" value="Moldova">Moldova</option>
+<option data-subtext="摩纳哥" value="Monaco">Monaco</option>
+<option data-subtext="蒙古国" value="Mongolia">Mongolia</option>
+<option data-subtext="黑山" value="Montenegro">Montenegro</option>
+<option data-subtext="蒙特塞拉特岛" value="Montserrat - United Kingdom of Great Britain and Northern Ireland">Montserrat - United Kingdom of Great Britain and Northern Ireland</option>
+<option data-subtext="摩洛哥" value="Morocco">Morocco</option>
+<option data-subtext="莫桑比克" value="Mozambique">Mozambique</option>
+<option data-subtext="缅甸" value="Myanmar (Burma)">Myanmar (Burma)</option>
+<option data-subtext="纳米比亚" value="Namibia">Namibia</option>
+<option data-subtext="瑙鲁" value="Nauru">Nauru</option>
+<option data-subtext="尼泊尔" value="Nepal">Nepal</option>
+<option data-subtext="荷兰" value="Netherlands">Netherlands</option>
+<option data-subtext="荷兰安的列斯群岛" value="Netherlands (Kingdom of the)">Netherlands (Kingdom of the)</option>
+<option data-subtext="新喀里多尼亚" value="New Caledonia">New Caledonia</option>
+<option data-subtext="新西兰" value="New Zealand">New Zealand</option>
+<option data-subtext="尼加拉瓜" value="Nicaragua">Nicaragua</option>
+<option data-subtext="尼日尔" value="Niger">Niger</option>
+<option data-subtext="尼日利亚" value="Nigeria">Nigeria</option>
+<option data-subtext="纽埃岛" value="Niue - New Zealand">Niue - New Zealand</option>
+<option data-subtext="朝鲜" value="North Korea">North Korea</option>
+<option data-subtext="北部马里亚纳群岛" value="Northern Mariana Islands (Commonwealth of the) - United States of America">Northern Mariana Islands (Commonwealth of the) - United States of America</option>
+<option data-subtext="挪威" value="Norway">Norway</option>
+<option data-subtext="阿曼" value="Oman">Oman</option>
+<option data-subtext="巴基斯坦" value="Pakistan">Pakistan</option>
+<option data-subtext="帕劳" value="Palau">Palau</option>
+<option data-subtext="巴勒斯坦" value="Palestine">Palestine</option>
+<option data-subtext="巴拿马" value="Panama">Panama</option>
+<option data-subtext="巴布亚新几内亚" value="Papua New Guinea">Papua New Guinea</option>
+<option data-subtext="巴拉圭" value="Paraguay">Paraguay</option>
+<option data-subtext="秘鲁" value="Peru">Peru</option>
+<option data-subtext="皮特克恩岛" value="Pitcairn Island - United Kingdom of Great Britain and Northern Ireland">Pitcairn Island - United Kingdom of Great Britain and Northern Ireland</option>
+<option data-subtext="波兰" value="Poland">Poland</option>
+<option data-subtext="葡萄牙" value="Portugal">Portugal</option>
+<option data-subtext="波多黎各" value="Puerto Rico">Puerto Rico</option>
+<option data-subtext="卡塔尔" value="Qatar">Qatar</option>
+<option data-subtext="马其顿" value="Republic of Macedonia (FYROM)">Republic of Macedonia (FYROM)</option>
+<option data-subtext="留尼旺岛（法属）" value="Reunion (French Department of) - France">Reunion (French Department of) - France</option>
+<option data-subtext="罗马尼亚" value="Romania">Romania</option>
+<option data-subtext="俄罗斯" value="Russian Federation">Russian Federation</option>
+<option data-subtext="卢旺达" value="Rwanda">Rwanda</option>
+<option data-subtext="圣赫勒拿群岛" value="Saint Helena - United Kingdom of Great Britain and Northern Ireland 666Somali Democratic Republic">Saint Helena - United Kingdom of Great Britain and Northern Ireland 666Somali Democratic Republic</option>
+<option data-subtext="和尼维斯岛" value="Saint Kitts and Nevis (Federation of)">Saint Kitts and Nevis (Federation of)</option>
+<option data-subtext="圣保罗和阿姆斯特丹岛" value="Saint Paul and Amsterdam Islands - France">Saint Paul and Amsterdam Islands - France</option>
+<option data-subtext="和密克隆岛（法属）" value="Saint Pierre and Miquelon (Territorial Collectivity of) - France">Saint Pierre and Miquelon (Territorial Collectivity of) - France</option>
+<option data-subtext="圣维森特和格林纳丁斯" value="Saint Vincent and the Grenadines">Saint Vincent and the Grenadines</option>
+<option data-subtext="西萨摩亚" value="Samoa (Independent State of)">Samoa (Independent State of)</option>
+<option data-subtext="圣马力诺" value="San Marino">San Marino</option>
+<option data-subtext="圣多美和普林西比" value="Sao Tome & Principe">Sao Tome & Principe</option>
+<option data-subtext="沙特阿拉伯" value="Saudi Arabia (Kingdom of)">Saudi Arabia (Kingdom of)</option>
+<option data-subtext="塞内加尔" value="Senegal">Senegal</option>
+<option data-subtext="塞尔维亚" value="Serbia">Serbia</option>
+<option data-subtext="塞舌尔" value="Seychelles">Seychelles</option>
+<option data-subtext="塞拉利昂" value="Sierra Leone">Sierra Leone</option>
+<option data-subtext="新加坡" value="Singapore">Singapore</option>
+<option data-subtext="斯洛伐克" value="Slovakia">Slovakia</option>
+<option data-subtext="斯洛文尼亚" value="Slovenia">Slovenia</option>
+<option data-subtext="所罗门群岛" value="Solomon Islands">Solomon Islands</option>
+<option data-subtext="索马里" value="Somalia">Somalia</option>
+<option data-subtext="南非" value="South Africa">South Africa</option>
+<option data-subtext="韩国" value="South Korea">South Korea</option>
+<option data-subtext="西班牙" value="Spain">Spain</option>
+<option data-subtext="斯里兰卡" value="Sri Lanka">Sri Lanka</option>
+<option data-subtext="圣卢西亚" value="St. Lucia">St. Lucia</option>
+<option data-subtext="苏丹" value="Sudan">Sudan</option>
+<option data-subtext="苏里南" value="Suriname">Suriname</option>
+<option data-subtext="斯威士兰" value="Swaziland">Swaziland</option>
+<option data-subtext="瑞典" value="Sweden">Sweden</option>
+<option data-subtext="瑞士" value="Switzerland">Switzerland</option>
+<option data-subtext="叙利亚" value="Syria">Syria</option>
+<option data-subtext="台湾" value="Taiwan">Taiwan</option>
+<option data-subtext="坦桑尼亚" value="Tanzania">Tanzania</option>
+<option data-subtext="桑给巴尔岛" value="Tanzania (United Republic of)">Tanzania (United Republic of)</option>
+<option data-subtext="泰国" value="Thailand">Thailand</option>
+<option data-subtext="科摩罗" value="The Comoros">The Comoros</option>
+<option data-subtext="菲律宾" value="The Philippines">The Philippines</option>
+<option data-subtext="多哥" value="Togo">Togo</option>
+<option data-subtext="汤加" value="Tonga">Tonga</option>
+<option data-subtext="特立尼达和多巴哥" value="Trinidad & Tobago">Trinidad & Tobago</option>
+<option data-subtext="突尼斯" value="Tunisia">Tunisia</option>
+<option data-subtext="土耳其" value="Turkey">Turkey</option>
+<option data-subtext="土库曼斯坦" value="Turkmenistan">Turkmenistan</option>
+<option data-subtext="土耳其和凯科斯群岛" value="Turks and Caicos Islands - United Kingdom of Great Britain and Northern Ireland">Turks and Caicos Islands - United Kingdom of Great Britain and Northern Ireland</option>
+<option data-subtext="图瓦卢" value="Tuvalu">Tuvalu</option>
+<option data-subtext="乌干达" value="Uganda">Uganda</option>
+<option data-subtext="乌克兰" value="Ukraine">Ukraine</option>
+<option data-subtext="阿联酋" value="United Arab Emirates">United Arab Emirates</option>
+<option data-subtext="美国" value="United States of America (USA)">United States of America (USA)</option>
+<option data-subtext="美国维尔京群岛" value="United States Virgin Islands">United States Virgin Islands</option>
+<option data-subtext="乌拉圭" value="Uruguay">Uruguay</option>
+<option data-subtext="乌兹别克斯坦" value="Uzbekistan">Uzbekistan</option>
+<option data-subtext="瓦努阿图" value="Vanuatu">Vanuatu</option>
+<option data-subtext="梵蒂冈" value="Vatican City (The Holy See)">Vatican City (The Holy See)</option>
+<option data-subtext="委内瑞拉" value="Venezuela">Venezuela</option>
+<option data-subtext="越南" value="Vietnam">Vietnam</option>
+<option data-subtext="瓦利斯群岛和富图纳群岛" value="Wallis and Futuna Islands - France">Wallis and Futuna Islands - France</option>
+<option data-subtext="也门" value="Yemen">Yemen</option>
+<option data-subtext="赞比亚" value="Zambia">Zambia</option>
+<option data-subtext="津巴布韦" value="Zimbabw">Zimbabw</option>
+
+</select>

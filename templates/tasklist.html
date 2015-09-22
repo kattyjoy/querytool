@@ -1,0 +1,181 @@
+{% extends "layout.html" %}
+  
+{% block headscript %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='jqwidgets/styles/jqx.base.css') }}" />
+    <script type="text/javascript" src="{{ url_for('static', filename='jqwidgets/jqxcore.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='jqwidgets/jqxdata.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='jqwidgets/jqxbuttons.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='jqwidgets/jqxscrollbar.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='jqwidgets/jqxmenu.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='jqwidgets/jqxlistbox.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='jqwidgets/jqxdropdownlist.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='jqwidgets/jqxgrid.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='jqwidgets/jqxgrid.pager.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='jqwidgets/jqxgrid.selection.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='jqwidgets/jqxgrid.columnsresize.js') }}"></script>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='jqwidgets/styles/jqx.bootstrap.css') }}" />
+
+        <script>
+        var lastindex = -1;
+        $(document).ready(function(){
+            var themeString = "bootstrap"
+        $("#navtasklist").addClass("active");
+        // $.ajax({
+        //     url:'/tasklist',
+        //     type: 'post',
+        //     data:{pageindex:'0'},
+        //     success: function(data)
+        //     {
+        //         $("div#tasktable").html(data);
+        //     },
+        //     error: function()
+        //     {
+        //       alert("连接失败");
+        //     }
+        //     });
+        var tasktotal = 0;
+        function gettotalrows(){
+            var data = {};
+
+            //post request, get data from the server 
+            $.ajax({
+            url:'/tasktotal',
+            type: 'post',
+            dataType:"json",
+            async:false,
+            success: function(resultData)
+            {
+                tasktotal = new Number(resultData);
+            },
+            error: function()
+            {
+              tasktotal = 0;
+              alert("获得总行数连接失败");
+            }
+            });
+        }
+        gettotalrows();
+
+        var generatedata = function(starti,endi){
+            var data = {};
+            //post request, get data from the server 
+            $.ajax({
+            url:'/tasklist',
+            type: 'post',
+            dataType:"json",
+            async:false,
+            data:{startindex:starti,
+                    endindex:endi},
+            success: function(resultData)
+            {
+                data = resultData;
+
+            },
+            error: function()
+            {
+               data = "";
+              alert("获得行数据连接失败");
+            }
+            });
+
+            return data;
+        }
+
+        var source = 
+        {
+            datatype: "json",
+            localdata:{},
+            totalrecords:tasktotal
+        }
+
+        //load virtual data
+        var rendergridrows = function(params){
+            var data = generatedata(params.startindex,params.endindex);
+            return data;
+        }
+        var initrowdetails = function (index,parentElement,gridElement,datarecord) {
+                            // your row details initialization code here. The index is the index of the expanded row with details.
+            id = datarecord.taskid;
+            $.ajax({
+            url:'/taskdetail',
+            type: 'post',
+            data:{taskid:id},
+            success: function(resultData)
+            {
+                var tabsdiv = $($($(parentElement).children()[0]).children()[0]);
+                tabsdiv.html(resultData);
+
+            },
+            error: function()
+            {
+               data = "";
+              alert("获得详细信息连接失败");
+            }
+            });
+
+        }
+        $('#tasktable').on('rowexpand', function (event) 
+        {
+            // event arguments.
+            var args = event.args;
+            if((lastindex != -1) && (lastindex != args.rowindex))
+            {
+                $('#tasktable').jqxGrid('hiderowdetails', lastindex);
+            }
+            // row's bound index.
+            lastindex =  args.rowindex;
+        });      
+        
+        var dataAdapter = new $.jqx.dataAdapter(source);
+        var width = $("#tasktable").parent().css("width");
+        width = Math.floor(new Number(width.slice(0,width.search("[^0-9]"))) * 0.95);
+
+        var taskcolwidth = width / 5;
+        var idwidth = taskcolwidth / 3;
+        var gridwidth = taskcolwidth * 4;
+        $("#tasktable").jqxGrid(
+        {
+            width: width,
+            autoheight:true,
+            rowsheight:30,
+            theme:themeString,
+            source : dataAdapter,
+            virtualmode: true,
+            pageable:true,
+            rendergridrows: rendergridrows,
+            columnsresize: true,
+            enablehover: true,
+            selectionmode:"none",
+            rowdetails:true,
+            rowdetailstemplate:{ rowdetails: "<div style='margin: 10px' class='detailtab panel panel-default'><div class='panel-body'></div></div>",
+             rowdetailsheight: 240 },
+             initrowdetails: initrowdetails,
+            columns:[
+            {
+                      text: '序号', 
+                      datafield: 'num', columntype: 'number', width: '5%',
+                      cellsrenderer: function (row, column, value) {
+                          return "<div style='margin:4px;'>" + (value + 1) + "</div>";
+                      }
+                  },
+            
+            {text:'任务ID',datafield:'taskid',type:'string',width:'20%'},
+            {text:"开始时间",datafield:'starttime',type:'string'},
+            {text:'状态',datafield:'status',type:'string'}]
+        });
+
+    });
+
+
+</script>
+{%endblock%}
+{% block body %}
+
+
+      <div class="container" style="padding-bottom:20px">
+        <div id="tasktable">
+        </div>
+    </div>
+
+{% endblock %}
